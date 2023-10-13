@@ -30,21 +30,13 @@
     "contributors": [
         "David Miller (https://davidmiller.io/)"
     ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/StartBootstrap/startbootstrap-sb-admin.git"
-    },
     "dependencies": {
         "bootstrap": "^5.3.2"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.16",
-        "browser-sync": "^2.29.3",
-        "chokidar": "^3.5.3",
-        "concurrently": "^8.2.1",
         "postcss": "^8.4.31",
         "prettier": "^3.0.3",
-        "pug": "^3.0.2",
         "sass": "^1.69.3",
         "shelljs": "^0.8.5",
         "upath": "^2.0.1"
