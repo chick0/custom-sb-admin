@@ -1,10 +1,28 @@
-// 
+//
 // Variables
-// 
+//
 
 // Import Bootstrap variables for use within theme
 @import "bootstrap/scss/functions.scss";
 @import "bootstrap/scss/variables.scss";
+
+// Use `Pretendard` font
+$font-family-sans-serif:
+    "Pretendard Variable",
+    Pretendard,
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    Roboto,
+    "Helvetica Neue",
+    "Segoe UI",
+    "Apple SD Gothic Neo",
+    "Noto Sans KR",
+    "Malgun Gothic",
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    sans-serif;
 
 // Import spacing variables
 @import "./variables/spacing.scss";
