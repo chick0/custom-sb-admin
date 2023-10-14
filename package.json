@@ -3,7 +3,7 @@
     "name": "startbootstrap-sb-admin",
     "version": "7.0.7",
     "scripts": {
-        "build": "npm run clean && npm run build:scripts && npm run build:scss",
+        "build": "yarn run clean && yarn run build:scripts && yarn run build:scss",
         "build:scripts": "node scripts/build-scripts.js",
         "build:scss": "node scripts/build-scss.js",
         "clean": "node scripts/clean.js"
