@@ -1,42 +1,54 @@
-'use strict';
-const autoprefixer = require('autoprefixer')
-const fs = require('fs');
-const packageJSON = require('../package.json');
-const upath = require('upath');
-const postcss = require('postcss')
-const sass = require('sass');
-const sh = require('shelljs');
+"use strict"
 
-const stylesPath = '../src/scss/styles.scss';
-const destPath = upath.resolve(upath.dirname(__filename), '../dist/css/styles.css');
+const autoprefixer = require("autoprefixer")
+const fs = require("fs")
+const upath = require("upath")
+const postcss = require("postcss")
+const sass = require("sass")
+const sh = require("shelljs")
 
-module.exports = function renderSCSS() {
-    
-    const results = sass.renderSync({
-        data: entryPoint,
-        includePaths: [
-            upath.resolve(upath.dirname(__filename), '../node_modules')
-        ],
-      });
+const inputPath = upath.resolve(upath.dirname(__filename), "../src/scss/styles.scss")
+const outputPath = upath.resolve(upath.dirname(__filename), "../dist/css/style.min.css")
 
-    const destPathDirname = upath.dirname(destPath);
-    if (!sh.test('-e', destPathDirname)) {
-        sh.mkdir('-p', destPathDirname);
-    }
-
-    postcss([ autoprefixer ]).process(results.css, {from: 'styles.css', to: 'styles.css'}).then(result => {
-        result.warnings().forEach(warn => {
-            console.warn(warn.toString())
-        })
-        fs.writeFileSync(destPath, result.css.toString());
+/**
+ * @returns {string}
+ */
+function build() {
+    const result = sass.compile(inputPath, {
+        loadPaths: [upath.resolve(upath.dirname(__filename), "../node_modules")],
+        style: "compressed",
     })
 
-};
+    if (result.css.charCodeAt(0) === 0xfeff) {
+        return result.css.slice(1)
+    }
 
-const entryPoint = `/*!
-* Start Bootstrap - ${packageJSON.title} v${packageJSON.version} (${packageJSON.homepage})
-* Copyright 2013-${new Date().getFullYear()} ${packageJSON.author}
-* Licensed under ${packageJSON.license} (https://github.com/StartBootstrap/${packageJSON.name}/blob/master/LICENSE)
-*/
-@import "${stylesPath}"
-`
+    return result.css
+}
+
+function createDir() {
+    const baseDir = upath.dirname(outputPath)
+
+    if (!sh.test("-e", baseDir)) {
+        sh.mkdir("-p", baseDir)
+    }
+}
+
+module.exports = function renderSCSS() {
+    const css = build()
+
+    createDir()
+
+    console.log(`CSS file saved at '${outputPath}'`)
+    fs.writeFileSync(outputPath, `@charset "UTF-8";\n` + css, {
+        encoding: "utf8",
+    })
+
+    postcss([autoprefixer])
+        .process(css, { from: undefined })
+        .then((result) => {
+            result.warnings().forEach((warn) => {
+                console.warn(warn.toString())
+            })
+        })
+}
